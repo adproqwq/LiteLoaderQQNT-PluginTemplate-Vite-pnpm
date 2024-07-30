@@ -9,11 +9,6 @@ declare namespace LiteLoader {
   const versions: ILiteLoaderVersion;
   const os: ILiteLoaderOS;
   const package: ILiteLoaderPackage;
-  const config: {
-    LiteLoader: {
-      disabled_plugins: string[],
-    }
-  };
   const plugins: Record<string, ILiteLoaderPlugin>;
   const api: ILiteLoaderAPI;
 
@@ -63,12 +58,18 @@ declare namespace LiteLoader {
   interface ILiteLoaderAPI {
     openPath: (path: string) => void,
     openExternal: (url: string) => void,
-    disablePlugin: (slug: string) => void,
     config: ILiteLoaderAPIConfig,
+    plugin: ILiteLoaderAPIPlugin,
   }
 
   interface ILiteLoaderAPIConfig {
     set: <IConfig = unknown>(slug: string, new_config: IConfig) => unknown,
     get: <IConfig = unknown>(slug: string, default_config?: IConfig) => IConfig,
+  }
+
+  interface ILiteLoaderAPIPlugin {
+    install: (file_path: string, undone: boolean) => boolean,
+    delete: (slug: string, delete_data: boolean, undone: boolean) => true | void,
+    disable: (slug: string, undone: boolean) => void,
   }
 }
